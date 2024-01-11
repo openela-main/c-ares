@@ -1,7 +1,7 @@
 Summary: A library that performs asynchronous DNS operations
 Name: c-ares
 Version: 1.13.0
-Release: 6%{?dist}.2
+Release: 9%{?dist}.1
 License: MIT
 Group: System Environment/Libraries
 URL: http://c-ares.haxx.se/
@@ -10,7 +10,10 @@ Source0: http://c-ares.haxx.se/download/%{name}-%{version}.tar.gz
 Source1: LICENSE
 Patch0: 0001-Use-RPM-compiler-options.patch
 Patch1: 0002-fix-CVE-2021-3672.patch
-Patch2: 0003-Merge-pull-request-from-GHSA-9g78-jv2r-p7vc.patch
+Patch2: 0003-Add-str-len-check-in-config_sortlist-to-avoid-stack-.patch
+Patch3: 0004-Merge-pull-request-from-GHSA-9g78-jv2r-p7vc.patch
+Patch4: 0005-avoid-read-heap-buffer-overflow-332.patch
+Patch5: 0006-Merge-pull-request-from-GHSA-x6mf-cxr9-8q6v.patch
 
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
@@ -37,7 +40,10 @@ compile applications or shared objects that use c-ares.
 %setup -q
 %patch0 -p1 -b .optflags
 %patch1 -p1 -b .dns
-%patch2 -p1 -b .udp
+%patch2 -p1 -b .sortlist
+%patch3 -p1 -b .udp
+%patch4 -p1 -b .buffer
+%patch5 -p1 -b .underwrite
 
 cp %{SOURCE1} .
 f=CHANGES ; iconv -f iso-8859-1 -t utf-8 $f -o $f.utf8 ; mv $f.utf8 $f
@@ -76,8 +82,17 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man3/ares_*
 
 %changelog
-* Wed May 31 2023 Alexey Tikhonov <atikhono@redhat.com> - 1.13.0-6.1
-- Resolves: rhbz#2209516 - CVE-2023-32067 c-ares: 0-byte UDP payload Denial of Service [rhel-8.8.0.z]
+* Fri Oct  6 2023 Alexey Tikhonov <atikhono@redhat.com> - 1.13.0-9.1
+- Resolves: RHEL-11931 - Buffer Underwrite in ares_inet_net_pton() [rhel-8.9.0.z]
+
+* Mon Sep 11 2023 Alexey Tikhonov <atikhono@redhat.com> - 1.13.0-9
+- Resolves: rhbz#2238293 - CVE-2020-22217 c-ares: read-heap-buffer-overflow in ares_parse_soa_reply [rhel-8] [rhel-8.9.0.z]
+
+* Mon May 29 2023 Alexey Tikhonov <atikhono@redhat.com> - 1.13.0-8
+- Resolves: rhbz#2209517 - CVE-2023-32067 c-ares: 0-byte UDP payload Denial of Service [rhel-8.9.0]
+
+* Fri May 12 2023 Alexey Tikhonov <atikhono@redhat.com> - 1.13.0-7
+- Resolves: rhbz#2170867 - c-ares: buffer overflow in config_sortlist() due to missing string length check [rhel-8]
 
 * Fri Oct 15 2021 Alexey Tikhonov <atikhono@redhat.com> - 1.13.0-6
 - Resolves: rhbz#1989425 - CVE-2021-3672 c-ares: missing input validation of host names may lead to Domain Hijacking [rhel-8]
