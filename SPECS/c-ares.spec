@@ -2,16 +2,14 @@
 
 Summary: A library that performs asynchronous DNS operations
 Name: c-ares
-Version: 1.17.1
-Release: 5%{?dist}.1
+Version: 1.19.1
+Release: 1%{?dist}
 License: MIT
-URL: http://c-ares.haxx.se/
-Source0: http://c-ares.haxx.se/download/%{name}-%{version}.tar.gz
+URL: http://c-ares.org/
+Source0: http://c-ares.org/download/%{name}-%{version}.tar.gz
 # The license can be obtained at http://c-ares.haxx.se/license.html
 Source1: LICENSE
 Patch0: 0001-Use-RPM-compiler-options.patch
-Patch1: 0002-fix-CVE-2021-3672.patch
-Patch2: 0003-Merge-pull-request-from-GHSA-9g78-jv2r-p7vc.patch
 
 BuildRequires: gcc
 %if %{use_cmake}
@@ -24,8 +22,8 @@ BuildRequires: libtool
 BuildRequires: make
 
 %description
-c-ares is a C library that performs DNS requests and name resolves 
-asynchronously. c-ares is a fork of the library named 'ares', written 
+c-ares is a C library that performs DNS requests and name resolves
+asynchronously. c-ares is a fork of the library named 'ares', written
 by Greg Hudson at MIT.
 
 %package devel
@@ -75,6 +73,7 @@ rm -f $RPM_BUILD_ROOT/%{_libdir}/libcares.la
 %{_includedir}/ares.h
 %{_includedir}/ares_build.h
 %{_includedir}/ares_dns.h
+%{_includedir}/ares_nameser.h
 %{_includedir}/ares_rules.h
 %{_includedir}/ares_version.h
 %{_libdir}/*.so
@@ -85,8 +84,15 @@ rm -f $RPM_BUILD_ROOT/%{_libdir}/libcares.la
 %{_mandir}/man3/ares_*
 
 %changelog
-* Wed May 31 2023 Alexey Tikhonov <atikhono@redhat.com> - 1.17.1-5.1
-- Resolves: rhbz#2209519 - CVE-2023-32067 c-ares: 0-byte UDP payload Denial of Service [rhel-9.2.0.z]
+* Fri May 26 2023 Alexey Tikhonov <atikhono@redhat.com> - 1.19.1-1
+- Resolves: rhbz#2209564 - CVE-2023-31124 c-ares: AutoTools does not set CARES_RANDOM_FILE during cross compilation [rhel-9]
+- Resolves: rhbz#2209556 - CVE-2023-31130 c-ares: Buffer Underwrite in ares_inet_net_pton() [rhel-9]
+- Resolves: rhbz#2209550 - CVE-2023-31147 c-ares: Insufficient randomness in generation of DNS query IDs [rhel-9]
+- Resolves: rhbz#2209520 - CVE-2023-32067 c-ares: 0-byte UDP payload Denial of Service [rhel-9.3.0]
+- Resolves: rhbz#2210370 - Rebase c-ares for RHEL 9.3
+
+* Fri May 12 2023 Alexey Tikhonov <atikhono@redhat.com> - 1.17.1-6
+- Resolves: rhbz#2170868 - c-ares: buffer overflow in config_sortlist() due to missing string length check [rhel-9]
 
 * Fri Nov 26 2021 Alexey Tikhonov <atikhono@redhat.com> - 1.17.1-5
 - Resolves: rhbz#2014523 - c-ares: missing input validation of host names may lead to Domain Hijacking [rhel-9]
