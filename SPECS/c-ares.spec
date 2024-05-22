@@ -1,7 +1,7 @@
 Summary: A library that performs asynchronous DNS operations
 Name: c-ares
 Version: 1.13.0
-Release: 9%{?dist}.1
+Release: 10%{?dist}
 License: MIT
 Group: System Environment/Libraries
 URL: http://c-ares.haxx.se/
@@ -82,11 +82,11 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man3/ares_*
 
 %changelog
-* Fri Oct  6 2023 Alexey Tikhonov <atikhono@redhat.com> - 1.13.0-9.1
-- Resolves: RHEL-11931 - Buffer Underwrite in ares_inet_net_pton() [rhel-8.9.0.z]
+* Wed Oct  4 2023 Alexey Tikhonov <atikhono@redhat.com> - 1.13.0-10
+- Resolves: RHEL-7853 - Buffer Underwrite in ares_inet_net_pton() [rhel-8]
 
-* Mon Sep 11 2023 Alexey Tikhonov <atikhono@redhat.com> - 1.13.0-9
-- Resolves: rhbz#2238293 - CVE-2020-22217 c-ares: read-heap-buffer-overflow in ares_parse_soa_reply [rhel-8] [rhel-8.9.0.z]
+* Fri Sep  8 2023 Alexey Tikhonov <atikhono@redhat.com> - 1.13.0-9
+- Resolves: rhbz#2235805 - read-heap-buffer-overflow in ares_parse_soa_reply [rhel-8]
 
 * Mon May 29 2023 Alexey Tikhonov <atikhono@redhat.com> - 1.13.0-8
 - Resolves: rhbz#2209517 - CVE-2023-32067 c-ares: 0-byte UDP payload Denial of Service [rhel-8.9.0]
