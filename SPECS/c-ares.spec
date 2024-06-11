@@ -3,13 +3,14 @@
 Summary: A library that performs asynchronous DNS operations
 Name: c-ares
 Version: 1.19.1
-Release: 1%{?dist}
+Release: 2%{?dist}
 License: MIT
 URL: http://c-ares.org/
 Source0: http://c-ares.org/download/%{name}-%{version}.tar.gz
 # The license can be obtained at http://c-ares.haxx.se/license.html
 Source1: LICENSE
 Patch0: 0001-Use-RPM-compiler-options.patch
+Patch1: 0002-Merge-pull-request-from-GHSA-mg26-v6qh-x48q.patch
 
 BuildRequires: gcc
 %if %{use_cmake}
@@ -84,6 +85,9 @@ rm -f $RPM_BUILD_ROOT/%{_libdir}/libcares.la
 %{_mandir}/man3/ares_*
 
 %changelog
+* Mon Mar 11 2024 Alexey Tikhonov <atikhono@redhat.com> - 1.19.1-2
+- Resolves: RHEL-26529 - Out of bounds read in ares__read_line() [rhel-9]
+
 * Fri May 26 2023 Alexey Tikhonov <atikhono@redhat.com> - 1.19.1-1
 - Resolves: rhbz#2209564 - CVE-2023-31124 c-ares: AutoTools does not set CARES_RANDOM_FILE during cross compilation [rhel-9]
 - Resolves: rhbz#2209556 - CVE-2023-31130 c-ares: Buffer Underwrite in ares_inet_net_pton() [rhel-9]
