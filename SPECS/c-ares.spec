@@ -1,7 +1,7 @@
 Summary: A library that performs asynchronous DNS operations
 Name: c-ares
 Version: 1.13.0
-Release: 10%{?dist}
+Release: 11%{?dist}
 License: MIT
 Group: System Environment/Libraries
 URL: http://c-ares.haxx.se/
@@ -14,6 +14,7 @@ Patch2: 0003-Add-str-len-check-in-config_sortlist-to-avoid-stack-.patch
 Patch3: 0004-Merge-pull-request-from-GHSA-9g78-jv2r-p7vc.patch
 Patch4: 0005-avoid-read-heap-buffer-overflow-332.patch
 Patch5: 0006-Merge-pull-request-from-GHSA-x6mf-cxr9-8q6v.patch
+Patch6: 0007-Merge-pull-request-from-GHSA-mg26-v6qh-x48q.patch
 
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
@@ -44,6 +45,7 @@ compile applications or shared objects that use c-ares.
 %patch3 -p1 -b .udp
 %patch4 -p1 -b .buffer
 %patch5 -p1 -b .underwrite
+%patch6 -p1 -b .bounds
 
 cp %{SOURCE1} .
 f=CHANGES ; iconv -f iso-8859-1 -t utf-8 $f -o $f.utf8 ; mv $f.utf8 $f
@@ -82,6 +84,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man3/ares_*
 
 %changelog
+* Tue Mar 12 2024 Alexey Tikhonov <atikhono@redhat.com> - 1.13.0-11
+- Resolves: RHEL-26525 - c-ares: Out of bounds read in ares__read_line() [rhel-8]
+
 * Wed Oct  4 2023 Alexey Tikhonov <atikhono@redhat.com> - 1.13.0-10
 - Resolves: RHEL-7853 - Buffer Underwrite in ares_inet_net_pton() [rhel-8]
 
