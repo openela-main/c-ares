@@ -2,12 +2,12 @@
 
 Summary: A library that performs asynchronous DNS operations
 Name: c-ares
-Version: 1.25.0
-Release: 6%{?dist}
+Version: 1.34.6
+Release: 1%{?dist}
 License: MIT
 URL: http://c-ares.org/
-Source0: http://c-ares.org/download/%{name}-%{version}.tar.gz
-Patch0: 0001-Merge-pull-request-from-GHSA-mg26-v6qh-x48q.patch
+Source0: https://github.com/c-ares/c-ares/releases/download/v%{version}/c-ares-%{version}.tar.gz
+#Patch0: 0001-Merge-pull-request-from-GHSA-mg26-v6qh-x48q.patch
 BuildRequires: gcc
 %if %{use_cmake}
 BuildRequires: cmake
@@ -34,14 +34,12 @@ compile applications or shared objects that use c-ares.
 %prep
 %autosetup -p1
 
-f=CHANGES ; iconv -f iso-8859-1 -t utf-8 $f -o $f.utf8 ; mv $f.utf8 $f
-
 %build
 # autoreconf -if
 # %%configure --enable-shared --disable-static \
 #            --disable-dependency-tracking
 %if %{use_cmake}
-%{cmake} -DCMAKE_INSTALL_LIBDIR:PATH="%{_libdir}" -DCARES_BUILD_TOOLS:BOOL=OFF
+%{cmake} -DCARES_BUILD_TOOLS:BOOL=OFF
 %cmake_build
 %else
 autoreconf -if
@@ -62,7 +60,7 @@ rm -f $RPM_BUILD_ROOT/%{_libdir}/libcares.la
 
 %files
 %license LICENSE.md
-%doc README.cares CHANGES NEWS
+%doc README.md RELEASE-NOTES.md
 %{_libdir}/*.so.*
 
 %files devel
@@ -71,7 +69,7 @@ rm -f $RPM_BUILD_ROOT/%{_libdir}/libcares.la
 %{_includedir}/ares_dns.h
 %{_includedir}/ares_dns_record.h
 %{_includedir}/ares_nameser.h
-%{_includedir}/ares_rules.h
+# %%{_includedir}/ares_rules.h
 %{_includedir}/ares_version.h
 %{_libdir}/*.so
 %if %{use_cmake}
@@ -81,6 +79,10 @@ rm -f $RPM_BUILD_ROOT/%{_libdir}/libcares.la
 %{_mandir}/man3/ares_*
 
 %changelog
+* Tue Dec 09 2025 Alejandro López <allopez@redhat.com> - 1.34.6-1
+- Update to 1.34.6
+  Resolves: RHEL-103761
+
 * Tue Oct 29 2024 Troy Dawson <tdawson@redhat.com> - 1.25.0-6
 - Bump release for October 2024 mass rebuild:
   Resolves: RHEL-64018
