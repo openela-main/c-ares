@@ -3,11 +3,13 @@
 Summary: A library that performs asynchronous DNS operations
 Name: c-ares
 Version: 1.34.6
-Release: 1%{?dist}
+Release: 2%{?dist}
 License: MIT
 URL: http://c-ares.org/
 Source0: https://github.com/c-ares/c-ares/releases/download/v%{version}/c-ares-%{version}.tar.gz
 #Patch0: 0001-Merge-pull-request-from-GHSA-mg26-v6qh-x48q.patch
+# https://github.com/c-ares/c-ares/commit/d823199b688052dcdc1646f2ab4cb8c16b1c644a
+Patch1: c-ares-1.34.6-CVE-2026-33630.patch
 BuildRequires: gcc
 %if %{use_cmake}
 BuildRequires: cmake
@@ -79,6 +81,10 @@ rm -f $RPM_BUILD_ROOT/%{_libdir}/libcares.la
 %{_mandir}/man3/ares_*
 
 %changelog
+* Fri Jul 10 2026 RHEL Packaging Agent <redhat-ymir-agent@redhat.com> - 1.34.6-2
+- Fix double-free in process_timeouts() (CVE-2026-33630)
+  Resolves: RHEL-192867
+
 * Tue Dec 09 2025 Alejandro López <allopez@redhat.com> - 1.34.6-1
 - Update to 1.34.6
   Resolves: RHEL-103761
