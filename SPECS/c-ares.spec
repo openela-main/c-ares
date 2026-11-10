@@ -3,7 +3,7 @@
 Summary: A library that performs asynchronous DNS operations
 Name: c-ares
 Version: 1.34.6
-Release: 2%{?dist}
+Release: 4%{?dist}
 License: MIT
 URL: http://c-ares.org/
 Source0: https://github.com/c-ares/c-ares/releases/download/v%{version}/c-ares-%{version}.tar.gz
@@ -81,7 +81,7 @@ rm -f $RPM_BUILD_ROOT/%{_libdir}/libcares.la
 %{_mandir}/man3/ares_*
 
 %changelog
-* Fri Jul 10 2026 RHEL Packaging Agent <redhat-ymir-agent@redhat.com> - 1.34.6-2
+* Wed Jul 22 2026 RHEL Packaging Agent <redhat-ymir-agent@redhat.com> - 1.34.6-4
 - Fix double-free in process_timeouts() (CVE-2026-33630)
   Resolves: RHEL-192867
 
