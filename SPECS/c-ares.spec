@@ -3,13 +3,16 @@
 Summary: A library that performs asynchronous DNS operations
 Name: c-ares
 Version: 1.34.6
-Release: 4%{?dist}
+Release: 5%{?dist}.2
 License: MIT
 URL: http://c-ares.org/
 Source0: https://github.com/c-ares/c-ares/releases/download/v%{version}/c-ares-%{version}.tar.gz
 #Patch0: 0001-Merge-pull-request-from-GHSA-mg26-v6qh-x48q.patch
-# https://github.com/c-ares/c-ares/commit/d823199b688052dcdc1646f2ab4cb8c16b1c644a
-Patch1: c-ares-1.34.6-CVE-2026-33630.patch
+# https://github.com/c-ares/c-ares/commit/5c8341ba6ff3a8e4e4dfd616f8ed0418838b8b7b
+Patch1: c-ares-1.34.6-CVE-2026-69184.patch
+# https://issues.redhat.com/browse/RHEL-289694
+# https://github.com/c-ares/c-ares/commit/eaded4cb200b2a5f8d73f11021ff7c8d6968aaab
+Patch2: c-ares-1.34.6-CVE-2026-69186.patch
 BuildRequires: gcc
 %if %{use_cmake}
 BuildRequires: cmake
@@ -81,9 +84,15 @@ rm -f $RPM_BUILD_ROOT/%{_libdir}/libcares.la
 %{_mandir}/man3/ares_*
 
 %changelog
-* Wed Jul 22 2026 RHEL Packaging Agent <redhat-ymir-agent@redhat.com> - 1.34.6-4
-- Fix double-free in process_timeouts() (CVE-2026-33630)
-  Resolves: RHEL-192867
+* Thu Oct 22 2026 RHEL Packaging Agent <redhat-ymir-agent@redhat.com> - 1.34.6-5.2
+- CVE-2026-69186 c-ares: c-ares: Denial of Service via unvalidated
+  DNS header record counts
+  Resolves: RHEL-289694
+
+* Thu Oct 22 2026 RHEL Packaging Agent <redhat-ymir-agent@redhat.com> - 1.34.6-5.1
+- CVE-2026-69184 c-ares: c-ares: CPU exhaustion denial of service via unbounded DNS name compression pointer chains
+  via unbounded DNS name compression pointer chains
+  Resolves: RHEL-289673
 
 * Tue Dec 09 2025 Alejandro López <allopez@redhat.com> - 1.34.6-1
 - Update to 1.34.6
